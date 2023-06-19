@@ -42,7 +42,7 @@ dependencies {
 
     /** thymeleaf (화면) **/
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
     /** spring boot web 연동 **/
     implementation 'org.springframework.boot:spring-boot-starter-web'

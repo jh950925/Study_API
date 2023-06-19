@@ -15,7 +15,7 @@ spring:
       client:
         registration:
           kakao:
-            client-id: "client_id"
+            client-id: "bcf679ac58b76d3ac0308d3a97ba1e73"
             redirect-uri: "http://localhost:8181/api/kakao/callback"
             client-authentication-method: POST
             authorization-grant-type: authorization_code
@@ -25,5 +25,9 @@ spring:
             token-uri: "https://kauth.kakao.com/oauth/token"
             user-info-uri: "https://kapi.kakao.com/v2/user/me"
 
-
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    prefix: classpath:/templates/
+    suffix: .html
 

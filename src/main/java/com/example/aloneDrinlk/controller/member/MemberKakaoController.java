@@ -58,7 +58,7 @@ public class MemberKakaoController {
         log.info(methodName);
 
         userKakaoService.kakaoLogin(code,request,response);
-        ModelAndView modelAndView = new ModelAndView("index.html");
+        ModelAndView modelAndView = new ModelAndView("main");
         return modelAndView;
     }
 }
