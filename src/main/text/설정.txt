@@ -1,0 +1,2 @@
+[인코딩 된 내용 받아오기]
+echo -n 'silvernine-tech-spring-boot-jwt-tutorial-secret-silvernine-tech-spring-boot-jwt-tutorial-secret' | base64

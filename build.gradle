@@ -1,0 +1,78 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.5.3'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    /** DB 연동 **/
+//    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+
+    /** JPA **/
+//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    /** NoDatabase(redis) **/
+//    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    /** spring security **/
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    /** JWT **/
+//    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+//    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+    /** thymeleaf (화면) **/
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+    /** spring boot web 연동 **/
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'org.projectlombok:lombok:1.18.26'
+
+    /** mybatis **/
+//    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2'
+
+    /** 개발 보조 도구 **/
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    /** lombox **/
+    // 컴파일 시점에만 사용
+    compileOnly 'org.projectlombok:lombok'
+    // 프로그램 내에서 사용
+    annotationProcessor 'org.projectlombok:lombok'
+
+    /** 기초 **/
+    implementation 'org.springframework.boot:spring-boot-starter'
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /** Main Test **/
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    /** Security Test **/
+    testImplementation 'org.springframework.security:spring-security-test'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
