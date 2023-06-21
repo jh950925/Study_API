@@ -23,4 +23,6 @@ public interface UserKakaoService {
 
     // 카카오 로그아웃
     public int kakaoLogout(KakaoUserVO kakaoUserVO) throws JsonProcessingException;
+
+    public void kakaoMessageMe(String accessToken) throws Exception;
 }

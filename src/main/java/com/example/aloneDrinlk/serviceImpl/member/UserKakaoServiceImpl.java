@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -23,6 +24,8 @@ public class UserKakaoServiceImpl implements UserKakaoService {
 
     @Autowired
     private Environment env;
+
+
 
     /**
      * 카카오 로그인 API
@@ -48,6 +51,7 @@ public class UserKakaoServiceImpl implements UserKakaoService {
         log.info("받아온 accessToken : " + accessToken);
         kakaoUserInfoVO = this.getKakaoUserInfo(accessToken);
         kakaoUserVO.setKakaoUserInfoVO(kakaoUserInfoVO);
+        kakaoUserVO.setAccessToken(accessToken);
 
         log.info("service 최종================================");
         log.info("받아왔던 code : " + code);
@@ -55,7 +59,7 @@ public class UserKakaoServiceImpl implements UserKakaoService {
         log.info("받아왔던 kakaoUserInfoVO : " + kakaoUserInfoVO);
         log.info("받아왔던 kakaoUserVO : " + kakaoUserVO);
 
-        return null;
+        return kakaoUserVO;
     }
 
     /**
@@ -180,6 +184,47 @@ public class UserKakaoServiceImpl implements UserKakaoService {
             log.info("로그아웃 실패");
         }
         return 1;
+    }
+
+    /**
+     * 카카오톡 나에게 메세지 보내기
+     * @param kakaoUserVO
+     */
+    @Override
+    public void kakaoMessageMe(String accessToken) throws Exception{
+        log.info("메시지 보내기 위한 토큰 : " + accessToken);
+
+        String messageUrl = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type: ", "application/x-www-form-urlencoded");
+        headers.set("Authorization: ", "Bearer " + accessToken);
+
+        Map<String, Object> body = Map.of(
+                "object_type", "text",
+                "text", "텍스트 영역입니다. 최대 200자 표시 가능합니다.",
+                "link", Map.of(
+                        "web_url", "https://developers.kakao.com",
+                        "mobile_web_url", "https://developers.kakao.com"
+                ),
+                "button_title", "바로 확인"
+        );
+
+        HttpEntity<Map<String,Object>> httpEntity = new HttpEntity<>(body, null);
+
+        ResponseEntity response = restTemplate.exchange(messageUrl, HttpMethod.POST, httpEntity, Map.class);
+
+        String responseBody = (String) response.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> parsedBody = objectMapper.readValue(responseBody, Map.class);
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            log.info("메세지 전공 성공");
+        } else {
+            log.info("메세지 전송 실패");
+        }
+
     }
 
 }

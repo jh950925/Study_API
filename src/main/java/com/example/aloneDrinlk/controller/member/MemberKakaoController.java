@@ -1,14 +1,12 @@
 package com.example.aloneDrinlk.controller.member;
 
+import com.example.aloneDrinlk.domain.member.KakaoUserVO;
 import com.example.aloneDrinlk.service.member.UserKakaoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -25,6 +23,7 @@ public class MemberKakaoController {
     private Environment env;
 
     private final UserKakaoService userKakaoService;
+    private KakaoUserVO kakaoUserVO;
 
     /**
      * 카카오 로그인
@@ -58,13 +57,17 @@ public class MemberKakaoController {
         log.info(methodName);
 
         userKakaoService.kakaoLogin(code,request,response);
+
         ModelAndView modelAndView = new ModelAndView("main");
+
         return modelAndView;
     }
 
-    public String kakaoMessageMe(){
+    @GetMapping("/messageMe")
+    public String kakaoMessageMe() throws Exception {
+        log.info("kakaoAccessToken : " + kakaoUserVO.getAccessToken());
 
-
+        userKakaoService.kakaoMessageMe(kakaoUserVO.getAccessToken());
 
         return "ok";
     }
