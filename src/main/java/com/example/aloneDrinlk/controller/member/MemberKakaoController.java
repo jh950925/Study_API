@@ -61,4 +61,12 @@ public class MemberKakaoController {
         ModelAndView modelAndView = new ModelAndView("main");
         return modelAndView;
     }
+
+    public String kakaoMessageMe(){
+
+
+
+        return "ok";
+    }
+
 }

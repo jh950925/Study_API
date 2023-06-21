@@ -19,9 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GitTestInfo {
 
-
     private final ObjectMapper objectMapper;
-
 
     public static void main(String[] args) {
         String username = "jh950925"; // 대상 사용자의 GitHub 사용자 이름
@@ -58,7 +56,7 @@ public class GitTestInfo {
             }
 
             log.info("arrayList : " + arrayList);
-
+            log.info("푸쉬한 데이터 숫자 : " + arrayList.size());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,6 +89,7 @@ public class GitTestInfo {
         List<Map<String, Object>> parseBody = response.getBody();
 
         log.info("=====\n" + parseBody);
+
 
         return parseBody;
     }
