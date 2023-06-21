@@ -63,6 +63,7 @@ public class MemberKakaoController {
         return modelAndView;
     }
 
+    //TODO 포스트맨 body값 확인 해서 재 실행
     @GetMapping("/messageMe")
     public String kakaoMessageMe() throws Exception {
         log.info("kakaoAccessToken : " + kakaoUserVO.getAccessToken());

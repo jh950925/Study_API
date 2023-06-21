@@ -211,7 +211,7 @@ public class UserKakaoServiceImpl implements UserKakaoService {
                 "button_title", "바로 확인"
         );
 
-        HttpEntity<Map<String,Object>> httpEntity = new HttpEntity<>(body, null);
+        HttpEntity<Map<String,Object>> httpEntity = new HttpEntity<>(body, headers);
 
         ResponseEntity response = restTemplate.exchange(messageUrl, HttpMethod.POST, httpEntity, Map.class);
 
