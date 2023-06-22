@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인화면</title>
+</head>
+<body>
+<input class="loginSns"       type="button"       value="로그인">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.loginSns').click(function() {
+            // 버튼이 클릭되었을 때 호출할 함수
+            loginSns(); // 컨트롤러 API 호출 함수
+        });
+    });
+
+    function loginSns() {
+
+        // 컨트롤러 API 호출
+        $.ajax({
+            url: '/api/kakao/login', // 컨트롤러 API의 엔드포인트 URL
+            type: 'GET', // 요청 메서드 (GET, POST 등)
+            data: {
+                // API에 전달할 데이터 (필요한 경우 추가)
+            },
+            success: function(response) {
+                console.log(response)
+                // API 호출이 성공했을 때 실행할 코드
+                window.location.href = response.url; // 리다이렉트 URL로 페이지 이동
+            },
+            error: function(error) {
+                // API 호출이 실패했을 때 실행할 코드
+            }
+        });
+    }
+</script>
+</body>
+</html>
