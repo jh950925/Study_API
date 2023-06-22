@@ -73,6 +73,9 @@ dependencies {
 
     /** Gson **/
     implementation 'com.google.code.gson:gson:2.8.8'
+
+    /** JSONObject **/
+    implementation group: 'org.json', name: 'json', version: '20160810'
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /** Main Test **/

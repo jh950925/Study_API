@@ -79,7 +79,7 @@ public class MemberKakaoController {
         log.info("메세지로 보낼 내용 : " + githubPayloadVO.getMessage());
 
 
-        userKakaoService.kakaoMessageMe(kakaoUserVO.getAccessToken());
+        userKakaoService.kakaoMessageMe(kakaoUserVO.getAccessToken(), githubPayloadVO.getMessage().toString());
 
         return "ok";
     }

@@ -6,10 +6,10 @@ import com.example.aloneDrinlk.service.member.UserKakaoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
-import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -192,7 +192,7 @@ public class UserKakaoServiceImpl implements UserKakaoService {
      * @param kakaoUserVO
      */
     @Override
-    public void kakaoMessageMe(String accessToken) throws Exception{
+    public void kakaoMessageMe(String accessToken, String gitMessage) throws Exception{
         log.info("메시지 보내기 위한 토큰 : " + accessToken);
 
         String messageUrl = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
@@ -205,8 +205,21 @@ public class UserKakaoServiceImpl implements UserKakaoService {
 
         headers.set("Content-Type", "application/x-www-form-urlencoded");
 
+        JSONObject templateObject = new JSONObject();
+        templateObject.put("object_type", "text");
+        templateObject.put("text", gitMessage);
+
+        JSONObject link = new JSONObject();
+        link.put("web_url", "https://github.com/jh950925");
+
+        templateObject.put("link", link);
+
+        // Convert the template_object to a JSON string
+        String templateObjectJson = templateObject.toString();
+
+        // Add the template_object to the body
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("template_object", "{ \"object_type\": \"text\", \"text\": \"테스트 카카오톡 메세지 발송!!\", \"link\": { \"web_url\": \"https://github.com/jh950925\" } }");
+        body.add("template_object", templateObjectJson);
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
 
