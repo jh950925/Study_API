@@ -6,11 +6,57 @@
 </head>
 <body>
 메인화면
+<input class="kakaoLogout" type="button" value="로그아웃">
+<input class="sendKakaoMessageGitContent" type="button" value="메세지보내기">
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.sendKakaoMessageGitContent').click(function() {
+            // 버튼이 클릭되었을 때 호출할 함수
+            sendKakaoMessage(); // 컨트롤러 API 호출 함수
+        });
+        $('.kakaoLogout').click(function () {
+            // 로그아웃 버튼 클릭 이벤트
+            kakaoLogout();
+        });
+    });
 
-<input class="favorite styled"
-       type="button"
-       value="로그아웃">
+    function sendKakaoMessage() {
+        // 컨트롤러 API 호출
+        $.ajax({
+            url: '/api/kakao/messageMe', // 컨트롤러 API의 엔드포인트 URL
+            type: 'POST', // 요청 메서드 (GET, POST 등)
+            data: {
+                // API에 전달할 데이터 (필요한 경우 추가)
+            },
+            success: function(response) {
+                // API 호출이 성공했을 때 실행할 코드
+            },
+            error: function(error) {
+                // API 호출이 실패했을 때 실행할 코드
+            }
+        });
+    }
+    
+    function kakaoLogout() {
+        $.ajax({
+            url: '/api/kakao/logout',
+            type: 'GET',
+            data: {
+
+            },success: function(response) {
+                window.location.href = 'http://localhost:8181/';// API 호출이 성공했을 때 실행할 코드
+            },
+            error: function(error) {
+                // API 호출이 실패했을 때 실행할 코드
+            }
+
+        })
+    }
+</script>
+
+
 </body>
 </html>
