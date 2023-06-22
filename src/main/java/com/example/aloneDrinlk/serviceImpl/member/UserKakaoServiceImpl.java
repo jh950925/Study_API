@@ -9,7 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
+import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -178,8 +181,6 @@ public class UserKakaoServiceImpl implements UserKakaoService {
 
         if (response.getStatusCode() == HttpStatus.OK) {
             log.info("로그아웃 성공");
-//            log.info("카카오 로그아웃 cust_id :  " + custId);
-//            kakaoLoginMapper.updateTestKakaoUserLgouDtm(custId);
         } else {
             log.info("로그아웃 실패");
         }
@@ -197,34 +198,25 @@ public class UserKakaoServiceImpl implements UserKakaoService {
         String messageUrl = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
 
         RestTemplate restTemplate = new RestTemplate();
+
+
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type: ", "application/x-www-form-urlencoded");
-        headers.set("Authorization: ", "Bearer " + accessToken);
+        headers.setBearerAuth(accessToken);
 
-        Map<String, Object> body = Map.of(
-                "object_type", "text",
-                "text", "텍스트 영역입니다. 최대 200자 표시 가능합니다.",
-                "link", Map.of(
-                        "web_url", "https://developers.kakao.com",
-                        "mobile_web_url", "https://developers.kakao.com"
-                ),
-                "button_title", "바로 확인"
-        );
+        headers.set("Content-Type", "application/x-www-form-urlencoded");
 
-        HttpEntity<Map<String,Object>> httpEntity = new HttpEntity<>(body, headers);
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("template_object", "{ \"object_type\": \"text\", \"text\": \"테스트 카카오톡 메세지 발송!!\", \"link\": { \"web_url\": \"https://github.com/jh950925\" } }");
 
-        ResponseEntity response = restTemplate.exchange(messageUrl, HttpMethod.POST, httpEntity, Map.class);
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
 
-        String responseBody = (String) response.getBody();
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> parsedBody = objectMapper.readValue(responseBody, Map.class);
+        ResponseEntity<String> response = restTemplate.exchange(messageUrl, HttpMethod.POST, requestEntity, String.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
-            log.info("메세지 전공 성공");
+            System.out.println("메시지 전송 성공");
         } else {
-            log.info("메세지 전송 실패");
+            System.out.println("메시지 전송 실패");
         }
-
     }
 
 }

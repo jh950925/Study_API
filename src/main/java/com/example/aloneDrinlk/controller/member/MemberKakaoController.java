@@ -1,6 +1,8 @@
 package com.example.aloneDrinlk.controller.member;
 
+import com.example.aloneDrinlk.domain.github.GithubPayloadVO;
 import com.example.aloneDrinlk.domain.member.KakaoUserVO;
+import com.example.aloneDrinlk.service.github.GithubService;
 import com.example.aloneDrinlk.service.member.UserKakaoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +25,9 @@ public class MemberKakaoController {
     private Environment env;
 
     private final UserKakaoService userKakaoService;
+    private final GithubService githubServiceb;
     private KakaoUserVO kakaoUserVO;
+    private GithubPayloadVO githubPayloadVO;
 
     /**
      * 카카오 로그인
@@ -56,7 +60,7 @@ public class MemberKakaoController {
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         log.info(methodName);
 
-        userKakaoService.kakaoLogin(code,request,response);
+        kakaoUserVO = userKakaoService.kakaoLogin(code,request,response);
 
         ModelAndView modelAndView = new ModelAndView("main");
 
@@ -64,9 +68,16 @@ public class MemberKakaoController {
     }
 
     //TODO 포스트맨 body값 확인 해서 재 실행
-    @GetMapping("/messageMe")
+    @PostMapping("/messageMe")
     public String kakaoMessageMe() throws Exception {
+
+        githubPayloadVO = githubServiceb.githubGetData();
+
+
         log.info("kakaoAccessToken : " + kakaoUserVO.getAccessToken());
+        log.info("메세지로 보낼 날짜 : " + githubPayloadVO.getCreateDt());
+        log.info("메세지로 보낼 내용 : " + githubPayloadVO.getMessage());
+
 
         userKakaoService.kakaoMessageMe(kakaoUserVO.getAccessToken());
 

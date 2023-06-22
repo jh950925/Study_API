@@ -3,6 +3,7 @@ package com.example.aloneDrinlk.serviceImpl.github;
 import com.example.aloneDrinlk.domain.github.GithubPayloadVO;
 import com.example.aloneDrinlk.service.github.GithubService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,15 @@ import java.util.Map;
 @Slf4j
 public class GithubServiceimpl implements GithubService {
 
+    @Autowired
+    private final GithubPayloadVO githubPayloadVO;
+
+    public GithubServiceimpl(GithubPayloadVO githubPayloadVO) {
+        this.githubPayloadVO = githubPayloadVO;
+    }
+
     @Override
-    public void githubGetData() throws IOException {
+    public GithubPayloadVO githubGetData() throws IOException {
         String username = "jh950925"; // 대상 사용자의 GitHub 사용자 이름
 
         GithubPayloadVO githubPayloadVO = new GithubPayloadVO();
@@ -80,10 +88,13 @@ public class GithubServiceimpl implements GithubService {
 
             log.info("저장한 VO : " + githubPayloadVO.getMessage());
             log.info("저장한 VO : " + githubPayloadVO.getCreateDt());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return githubPayloadVO;
     }
+
 
 
     // GET 요청을 보내고 응답 데이터를 문자열로 반환하는 메소드
