@@ -4,6 +4,7 @@ import com.example.aloneDrinlk.domain.github.GithubPayloadVO;
 import com.example.aloneDrinlk.domain.member.KakaoUserVO;
 import com.example.aloneDrinlk.service.github.GithubService;
 import com.example.aloneDrinlk.service.member.UserKakaoService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class MemberKakaoController {
     }
 
     /**
-     *  카카오 로그인 CODE 발급
+     *  카카오 로그인 callback
      */
     @GetMapping("/callback")
     public ModelAndView kakaoLoginCallback(@RequestParam String code, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -61,18 +62,26 @@ public class MemberKakaoController {
         log.info(methodName);
 
         kakaoUserVO = userKakaoService.kakaoLogin(code,request,response);
+        log.info("카카오 로그인 callback : " + kakaoUserVO);
 
         ModelAndView modelAndView = new ModelAndView("main");
 
         return modelAndView;
     }
 
+    @GetMapping("/logout")
+    public void kakaoLogout() throws JsonProcessingException {
+
+        userKakaoService.kakaoLogout(kakaoUserVO);
+
+    }
+
+
     //TODO 포스트맨 body값 확인 해서 재 실행
     @PostMapping("/messageMe")
     public String kakaoMessageMe() throws Exception {
 
         githubPayloadVO = githubServiceb.githubGetData();
-
 
         log.info("kakaoAccessToken : " + kakaoUserVO.getAccessToken());
         log.info("메세지로 보낼 날짜 : " + githubPayloadVO.getCreateDt());

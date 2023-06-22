@@ -197,27 +197,26 @@ public class UserKakaoServiceImpl implements UserKakaoService {
 
         String messageUrl = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
 
+        // RestTempalate 선언
         RestTemplate restTemplate = new RestTemplate();
 
-
+        // headers 선언
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
-
         headers.set("Content-Type", "application/x-www-form-urlencoded");
 
+        // JSONOjbect로 body에 담을 내용 정리
         JSONObject templateObject = new JSONObject();
+        JSONObject link = new JSONObject();
         templateObject.put("object_type", "text");
         templateObject.put("text", gitMessage);
-
-        JSONObject link = new JSONObject();
-        link.put("web_url", "https://github.com/jh950925");
-
+        link.put("web_url", "");
         templateObject.put("link", link);
 
-        // Convert the template_object to a JSON string
+        // JSONObject내용 String 형식으로 변환
         String templateObjectJson = templateObject.toString();
 
-        // Add the template_object to the body
+        // String 형식 데이터 bodu에 추가
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("template_object", templateObjectJson);
 
